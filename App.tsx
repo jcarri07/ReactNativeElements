@@ -73,10 +73,9 @@ const removeData = useCallback((index) => {
 }, [data, setData]);
 
 const loadImageFromGallery = async(array) => {
-    
+
     const options = {
         title: 'Selecionar Imagenes',
-        customButtons: [{ name: 'addImage', title: 'añadir Imagenes'}],
         storangeOptions: {
             skipBackup: true,
             path: 'images',
@@ -195,7 +194,7 @@ const loadImageFromGallery = async(array) => {
                     <View
                       style={{
                         width: 120,
-                        height: '70%',
+                        height: '80%',
                         borderRadius: 20,
                         top: 10,
                         marginRight: 20,
@@ -215,7 +214,7 @@ const loadImageFromGallery = async(array) => {
                       <View
                       style={{
                         width: 120,
-                        height: '70%',
+                        height: '82%',
                         borderRadius: 20,
                         top: 10,
                         marginRight: 20,
