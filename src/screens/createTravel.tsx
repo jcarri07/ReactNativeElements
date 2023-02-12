@@ -54,6 +54,8 @@ import {
   inputTextContainerSmall,
 } from '../constants/estilos';
 
+import { useNavigation } from '@react-navigation/native';
+
 import InputDate from '../components/InputDate';
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 
@@ -64,44 +66,77 @@ export default function App() {
   const [imagen, setImage] = useState();
   const [data, setData] = useState<never[]>([]);
 
-const addData = useCallback((newData: any) => {
-      setData([...data, newData]);
-}, [data, setData]);
-
-const removeData = useCallback((index: any) => {
-  setData(data.filter((_, i) => i !== index));
-}, [data, setData]);
-
-const loadImageFromGallery = async() => {
-
-    const options = {
-        title: 'Selecionar Imagenes',
-        storangeOptions: {
-            skipBackup: true,
-            path: 'images',
-        },
-    }
-   
-    launchImageLibrary(options, response => {
-      
-        if(response.errorCode) {
-            console.log(response.errorMessage);
-        } else if(response.didCancel) {
-            console.log("El usuario cancelo la seleccion");
-        } else {
-  
-            const path = response.assets[0].uri;
-            console.log(path);
-            addData(path)
-        }
-    })
+  type Nav = {
+    navigate: (value: string) => void;
   }
+  
+  const { navigate } = useNavigation<Nav>()
+
+  const addData = useCallback(
+    (newData: any) => {
+      setData([...data, newData]);
+    },
+    [data, setData],
+  );
+
+  const removeData = useCallback(
+    (index: any) => {
+      setData(data.filter((_, i) => i !== index));
+    },
+    [data, setData],
+  );
+
+  const loadImageFromGallery = async () => {
+    const options = {
+      title: 'Selecionar Imagenes',
+      storangeOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    launchImageLibrary(options, response => {
+      if (response.errorCode) {
+        console.log(response.errorMessage);
+      } else if (response.didCancel) {
+        console.log('El usuario cancelo la seleccion');
+      } else {
+        const path = response.assets[0].uri;
+        console.log(path);
+        addData(path);
+      }
+    });
+  };
 
   return (
     <KeyboardAwareScrollView style={styles.container}>
       <ThemeProvider theme={theme}>
         <SafeAreaView>
           <View>
+            <Header
+              containerStyle={{height: '10%', width: '100%'}}
+              leftComponent={
+                <TouchableOpacity>
+                  <Icon
+                    name="close"
+                    color={'#1c1c1c'}
+                    size={30}
+                    style={{left: '10%'}}
+                  />
+                </TouchableOpacity>
+              }
+              centerComponent={{
+                text: 'Crear Viaje',
+                style: {
+                  marginTop: '2%',
+                  color: '#1c1c1c',
+                  fontFamily: 'Nunito',
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                },
+              }}
+              backgroundColor={'#ffff'}
+            />
             <View style={formContainer}>
               <Text
                 style={{
@@ -189,66 +224,80 @@ const loadImageFromGallery = async() => {
                 Seleccionar fotos
               </Text>
               <View style={styles.containerImages}>
-                <ScrollView horizontal={true}>
-                  <TouchableOpacity onPress={loadImageFromGallery}>
-                    <View
-                      style={{
-                        width: 120,
-                        height: '80%',
-                        borderRadius: 20,
-                        top: 10,
-                        marginRight: 20,
-                      }}>
-                      <Image
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          borderRadius: 20,
-                        }}
-                        source={require('../assets/ImageField.png')}
-                      />
-                    </View>
-                  </TouchableOpacity>
-                  <View style={{flexDirection: 'row'}}>
-                    {data.map((item, index)=> (
+                <ScrollView horizontal={true} >
+                  {size(data) < 8 && (
+                    <TouchableOpacity onPress={loadImageFromGallery}>
                       <View
                         style={{
-                        width: 120,
-                        height: '82%',
-                        borderRadius: 20,
-                        top: 10,
-                        marginRight: 20,
-                      }}>
-                      <Image
-                        key={index}
-                        style={{
-                          width: '100%',
-                          height: '100%',
+                          width: 150,
+                          height: '93%',
                           borderRadius: 20,
-                        }}
-                        source={{uri: item}}
-                      />
-                      <TouchableOpacity
-                        key={index}
-                        onPress={()=> removeData(index)}
-                        style={{
-                          left: '70%',
-                          bottom: '35%',
-                          borderRadius: 50,
-                          backgroundColor: '#1c1c1c',
-                          width: '25%',
-                          opacity: 0.6,
+                          justifyContent: 'center', 
+                          alignItems: 'center',
+                          marginRight: 15,
                         }}>
-                        <Icon
-                          name="close"
-                          style={{color: '#ffff', fontSize: 30}}
+                        <Image
+                          style={{
+                            width: '95%',
+                            height: '90%',
+                            borderRadius: 20,
+                          }}
+                          source={require('../assets/ImageField.png')}
                         />
-                      </TouchableOpacity>
-                    </View>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                  <View style={{
+                    flexDirection: 'row',
+                    }}>
+                    {data.map((item, index) => (
+                      <View
+                        style={{
+                          width: 140,
+                          height: '92%',
+                          borderRadius: 20,
+                          marginRight: 20,
+                          marginTop: '1%',
+                        }}>
+                        <Image
+                          key={index}
+                          style={{
+                            width: '100%',
+                            height: '92%',
+                            borderRadius: 20,
+                          }}
+                          source={{uri: item}}
+                        />
+                        <TouchableOpacity
+                          key={index}
+                          onPress={() => removeData(index)}
+                          style={{
+                            left: '70%',
+                            bottom: '35%',
+                            borderRadius: 50,
+                            backgroundColor: '#1c1c1c',
+                            width: '25%',
+                            opacity: 0.6,
+                          }}>
+                          <Icon
+                            name="close"
+                            style={{color: '#ffff', fontSize: 30}}
+                          />
+                        </TouchableOpacity>
+                      </View>
                     ))}
                   </View>
                 </ScrollView>
               </View>
+              <Text
+                style={{
+                  marginTop: 20,
+                  color: 'gray',
+                  fontSize: 12,
+                  marginLeft: '3%',
+                }}>
+                Fotos: {data.length}/8 Selecciona tu primera foto como principal
+              </Text>
               <View style={buttonContainer}>
                 <Button
                   ViewComponent={LinearGradient} // Don't forget this!
@@ -256,7 +305,7 @@ const loadImageFromGallery = async() => {
                   title="Siguiente"
                   containerStyle={buttonSmall}
                   buttonStyle={buttonSmall}
-                  onPress={() => console.log('Siguiente')}
+                  onPress={() => navigate('SecondStep')}
                 />
                 <Button
                   title="Cancelar"
@@ -274,38 +323,6 @@ const loadImageFromGallery = async() => {
   );
 }
 
-// function UploadImage({toastRef, imagesSelected, setImagesSelected}) {
-
-//   return (
-//     <>
-//       {size(imagesSelected) < 10 && (
-//         <TouchableOpacity onPress={ loadImageFromGallery }>
-//           <View
-//             style={{
-//               width: 120,
-//               height: '70%',
-//               borderRadius: 20,
-//               top: 10,
-//               marginRight: 20,
-//             }}>
-//             <Image
-//               style={{width: '100%', height: '100%', borderRadius: 20}}
-//               source={require('./src/assets/ImageField.png')}
-//             />
-//           </View>
-//         </TouchableOpacity>
-//       )}
-//       {map(imagesSelected, (image, index) => (
-//         <Avatar 
-//           key={index}
-//           style={styles.miniatureStyle}
-//           source = {{uri: image}}
-//         />
-//       ))}
-//     </>
-//   );
-// }
-
 const styles = StyleSheet.create({
   container: {
     height: 1,
@@ -313,7 +330,7 @@ const styles = StyleSheet.create({
   },
 
   containerImages: {
-    right: '2%',
+    marginLeft: '2%',
     height: '18%',
     width: '110%',
     flexDirection: 'row',

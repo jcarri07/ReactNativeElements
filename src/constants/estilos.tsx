@@ -124,10 +124,13 @@ export const inputTextContainerSmall = {
 }
 
 export const inputTextArea = {
-    height: heightTextArea,
+    textAlignVertical: 'top',
+    paddingTop: 15,
     borderRadius: 20,
     borderColor: colors.primary2,
     backgroundColor: colors.background,
+    fontSize: 14,
+
 }
 
 
@@ -140,10 +143,10 @@ export const formContainer = {
 }
 
 export const buttonContainer = {
-    top: '5%',
-    marginHorizontal: "3%",
-    justifyContent: "space-between",
-    flexDirection: "row",
+    marginTop: 15,
+    marginHorizontal: '3%',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
 }
 
 export const label = {
