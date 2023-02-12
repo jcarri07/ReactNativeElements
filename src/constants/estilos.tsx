@@ -8,6 +8,8 @@ let small = ScreenWidth*0.4;
 let heightButton =  ScreenHeight*0.08;
 let heightInput = ScreenHeight*0.08;
 
+let heightTextArea = heightInput*2;
+
 import { createTheme } from '@rneui/themed';
 
 export const colors = {
@@ -122,13 +124,10 @@ export const inputTextContainerSmall = {
 }
 
 export const inputTextArea = {
-    height: heightInput*2,
+    height: heightTextArea,
     borderRadius: 20,
     borderColor: colors.primary2,
     backgroundColor: colors.background,
-    fontSize: 14,
-    textAlign: 'left',
-    textAlignVertical: 'top',
 }
 
 
