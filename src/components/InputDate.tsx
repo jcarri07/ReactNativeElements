@@ -46,7 +46,7 @@ export default function InputDate() {
 const styles = StyleSheet.create({
     textField_container: {
         width: 180,
-        height: heightInput,
+        height: 54,
     },
 
     container: {
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     textInputDate: {
         color: 'gray',
         width: '50%',
-        top: '30%',
+        top: '40%',
         left: '25%',
     },
 
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: colors.primary2,
         left: '5%',
-        top: '30%',
+        top: '40%',
         position: 'absolute',
     },
 })

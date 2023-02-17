@@ -25,10 +25,6 @@ import {
 } from '@rneui/themed';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-// import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-
-//Funcion para cargar imagenes
-// import { loadImageFromGallery } from './src/utils/helpers';
 //Iconos
 import Icon from 'react-native-vector-icons/Ionicons';
 //Medidas de RNE
